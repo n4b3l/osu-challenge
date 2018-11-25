@@ -14,6 +14,10 @@
 Route::get('/', function () {
     return view('pages.osu-challenge');
 });
-Route::get('/view-challenges', function () {
+Route::get('/challenges', function () {
     return view('pages.view_challenges');
+});
+
+Route::get('/challenges/{id}', function ($id) {
+    return view('pages.view_challenge',['id' => $id]);
 });

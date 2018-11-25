@@ -46,7 +46,7 @@ class ChallengeController extends Controller
         ]);
 
         $challenge->save();
-        return redirect()->to('view-challenges');
+        return redirect()->to('challenges');
     }
 
     /**

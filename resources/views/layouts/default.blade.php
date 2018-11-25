@@ -17,4 +17,5 @@
     {{--</footer>--}}
 </div>
 </body>
+        @yield('scripts')
 </html>
