@@ -1,0 +1,1 @@
+<div id="copyright text-right">© Osu-Challenge</div>

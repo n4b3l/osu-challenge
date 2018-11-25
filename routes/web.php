@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.osu-challenge');
 });
-Route::get('/osu-challenge', function () {
-    return view('osu-challenge');
+Route::get('/view-challenges', function () {
+    return view('pages.view_challenges');
 });
