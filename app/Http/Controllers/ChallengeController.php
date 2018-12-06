@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Challenge;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ChallengeController extends Controller
@@ -41,11 +42,19 @@ class ChallengeController extends Controller
 
         $challenge->fill([
             'name' => $request->name,
-            'map_ids' => $request->players,
-            'user_ids' => $request->beatmaps
+            'map_ids' => $request->beatmaps,
+            'user_ids' => $request->players
         ]);
 
         $challenge->save();
+        $beatmap_ids = explode(";",  $request->beatmaps);
+        $users = explode(";", $request->players);
+        foreach ($beatmap_ids as $beatmap) {
+
+        }
+        DB::table('challenge_user_tt')->insert(
+            ['challenge_id'=>0,'user_id'=>'','score'=>0,'beatmap_id'=>0,'beatmap_name'=>'']
+        );
         return redirect()->to('challenges');
     }
 
