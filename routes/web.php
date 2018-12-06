@@ -21,3 +21,7 @@ Route::get('/challenges', function () {
 Route::get('/challenges/{id}', function ($id) {
     return view('pages.view_challenge',['id' => $id]);
 });
+
+Route::get('/test', function () {
+    return view('pages.test');
+});
