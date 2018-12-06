@@ -49,12 +49,50 @@ class ChallengeController extends Controller
         $challenge->save();
         $beatmap_ids = explode(";",  $request->beatmaps);
         $users = explode(";", $request->players);
-        foreach ($beatmap_ids as $beatmap) {
+        foreach ($beatmap_ids as $beatmap_id) {
+            $map = DB::table('map_title_tt')->where('map_id',$beatmap_id)->first();
+            if($map !== null) {
+                $beatmap_name = $map->artist . " - " . $map->title;
+            }
+            else{
+                $curl = curl_init();
 
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://osu.ppy.sh/api/get_beatmaps",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"k\"\r\n\r\n" . \Config::get('values.OSU_API_KEY') . "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"b\"\r\n\r\n" . $beatmap_id . "\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--",
+                    CURLOPT_HTTPHEADER => array(
+                        "Postman-Token: 0ba1199b-c949-4987-bdb6-a819ad1ff247",
+                        "cache-control: no-cache",
+                        "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"
+                    ),
+                ));
+                $resp = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                    $data = json_decode($resp, true);
+                    $beatmap_name = $data[0]['artist'] . ' - ' . $data[0]['title'];
+                    DB::table('map_title_tt')->insert(
+                        ['map_id'=>$beatmap_id,'title'=>$data[0]['title'],'artist'=>$data[0]['artist']]
+                    );
+                }
+            }
+            foreach ($users as $user){
+                DB::table('challenge_user_tt')->insert(
+                    ['challenge_id'=>$challenge->id,'user_id'=>$user,'score'=>0,'beatmap_id'=>$beatmap_id,'beatmap_name'=>$beatmap_name]
+                );
+            }
         }
-        DB::table('challenge_user_tt')->insert(
-            ['challenge_id'=>0,'user_id'=>'','score'=>0,'beatmap_id'=>0,'beatmap_name'=>'']
-        );
         return redirect()->to('challenges');
     }
 
