@@ -8,7 +8,7 @@
 @endsection
 @section('content')
     <?php
-    $challenges = App\Challenge::all();
+    $challenges = App\Challenge::where('id', $_GET['id']);
     ?>
     <table id="challengeTable" class="table  table-bordered" style="width:100%">
         <thead>
@@ -19,7 +19,7 @@
         </thead>
         <tbody class="hoverable">
         <?php foreach ($challenges as $challenge) { ?>
-        <tr class='clickable-row' data-href='/view_challenge.php?id=<?= $challenge->ID   ?>'>
+        <tr class='clickable-row' data-href='/challenges/<?= $challenge->ID   ?>'>
             <td><?= $challenge->name ?></td>
             <td><?= $challenge->user_ids ?></td>
         </tr>

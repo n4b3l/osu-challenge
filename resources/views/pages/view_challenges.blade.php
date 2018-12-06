@@ -19,7 +19,7 @@
         </thead>
         <tbody class="hoverable">
         <?php foreach ($challenges as $challenge) { ?>
-        <tr class='clickable-row' data-href='/view_challenge.php?id=<?= $challenge->ID   ?>'>
+        <tr class='clickable-row' data-href='/challenges/<?= $challenge->ID   ?>'>
             <td><?= $challenge->name ?></td>
             <td><?= $challenge->user_ids ?></td>
         </tr>

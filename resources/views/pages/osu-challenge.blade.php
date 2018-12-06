@@ -2,7 +2,7 @@
 @section('content')
     <div class="col-md-12 text-center">
         <div class="btn-group btn-group-lg">
-            <a href="/view-challenges" class="btn btn-primary">View Challenges!</a>
+            <a href="/challenges" class="btn btn-primary">View Challenges!</a>
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createChallengeModal">Create
                 Challenge!
             </button>
