@@ -1,3 +1,4 @@
+<?php use Illuminate\Support\Facades\DB; ?>
 @extends('layouts.default')
 @section('head')
     <style>
@@ -8,22 +9,29 @@
 @endsection
 @section('content')
     <?php
-    $challenges = App\Challenge::where('id', $_GET['id']);
+    $scores = DB::table('challenge_user_tt')->where('challenge_id',$id)->get();
     ?>
     <table id="challengeTable" class="table  table-bordered" style="width:100%">
         <thead>
         <tr>
-            <th>Challenge</th>
-            <th>Players</th>
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Player</th>
+            <th scope="col">Score</th>
         </tr>
         </thead>
-        <tbody class="hoverable">
-        <?php foreach ($challenges as $challenge) { ?>
-        <tr class='clickable-row' data-href='/challenges/<?= $challenge->ID   ?>'>
-            <td><?= $challenge->name ?></td>
-            <td><?= $challenge->user_ids ?></td>
+        <tbody>
+        <?php
+        foreach ($scores as $score) { ?>
+        <tr>
+            <th scope="row"><?= $score->beatmap_id ?></th>
+            <td><?= $score->beatmap_name ?></td>
+            <td><?= $score->user_id ?></td>
+            <td><?= $score->score ?></td>
         </tr>
-        <?php } ?>
+        <?php
+        }
+        ?>
         </tbody>
     </table>
 @endsection
